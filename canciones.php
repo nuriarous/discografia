@@ -1,4 +1,8 @@
 <?php
+session_start();
+if (isset($_SESSION['nombre'])) {
+
+
 
 $opc = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');
 try {
@@ -30,7 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $texto = $_POST['texto'];
     $buscar = $_POST['buscar'];
 
-
     $consulta = $discografia->query("SELECT * FROM cancion WHERE titulo LIKE '$texto'");
     while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
         if ($buscar == 'cancion') {
@@ -57,4 +60,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     }
+    echo '<h2>Lista de canciones buscadas</h2>';
+    setcookie("cookie", $texto);
+    /*if(isset($_COOKIE['cookie'])){
+    foreach ($_COOKIE['cookie'] as $nombre => $valor){
+        $name = htmlspecialchars($nombre);
+        $value = htmlspecialchars($valor);
+        echo '$nombre: '. $valor .'<br>';
+} 
+
+}
+*/
+echo $texto;
+}
+
+
+} else {
+    header('Location: login.php');
 }
